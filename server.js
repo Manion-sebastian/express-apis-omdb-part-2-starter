@@ -16,13 +16,15 @@ app.use(ejsLayouts);
 // Adds some logging to each request
 app.use(require('morgan')('dev'));
 
+const APIKEY = process.env.OMDB_API_KEY
+
 // Routes
 app.get('/', function(req, res) {
   res.render('index.ejs')
 })
 
 app.get('/results', (req, res) => {
-  axios.get(`http://www.omdbapi.com/?s=${req.query.movieSearch}&apikey=${process.env.OMDB_API_KEY}`)
+  axios.get(`http://www.omdbapi.com/?s=${req.query.movieSearch}&apikey=${APIKEY}`)
     .then(response => {
       res.render('results.ejs', { movies: response.data.Search })
     })
@@ -31,7 +33,7 @@ app.get('/results', (req, res) => {
 
 app.get('/details/:id', (req, res) => {
   console.log(req.params.id)
-  axios.get(`http://www.omdbapi.com/?i=${req.params.id}&apikey=${process.env.OMDB_API_KEY}`)
+  axios.get(`http://www.omdbapi.com/?i=${req.params.id}&apikey=${APIKEY}`)
     .then(response => {
       res.render('detail.ejs', { movie: response.data })
     })
